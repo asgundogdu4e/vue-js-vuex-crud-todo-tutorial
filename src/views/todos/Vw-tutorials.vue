@@ -1,0 +1,1 @@
+<template>  <b-container>    <Cmptutorials></Cmptutorials>  </b-container></template><script>import Cmptutorials from "./../../components/todos/Cmp-tutorials.vue";export default {  name: "Vw-tutorials.vue",  components: { Cmptutorials },  methods: {},  mounted() {    this.$store.commit("sayfaBasligi", "");},   created() {},};</script><style scoped></style>

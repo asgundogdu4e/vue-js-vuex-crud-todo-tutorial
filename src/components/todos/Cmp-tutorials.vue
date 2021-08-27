@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-modal v-model="todos__KayitDialog" hide-footer>
-      <todosEkleDuzelt></todosEkleDuzelt>
+    <b-modal v-model="tutorials__KayitDialog" hide-footer>
+      <tutorialsEkleDuzelt></tutorialsEkleDuzelt>
     </b-modal>
     <b-card
       border-variant="secondary"
@@ -40,15 +40,15 @@
       <b-table
         striped
         hover
-        :items="todos__Listesi"
+        :items="tutorials__Listesi"
         :fields="fields"
         :filter="aranacak"
         sticky-header
         style="min-height: 600px"
       >
-        <template #cell(completed)="row">
+        <template #cell(published)="row">
           <b-form-checkbox
-            v-model="row.item.completed"
+            v-model="row.item.published"
             onclick="return false;"
           ></b-form-checkbox>
         </template>
@@ -73,13 +73,13 @@
 
 <script>
 import Ensar from "@/ktb/index";
-import todosEkleDuzelt from "./Cmp-todosEkleDuzelt.vue";
+import tutorialsEkleDuzelt from "./Cmp-tutorialsEkleDuzelt.vue";
 
 import {
-  todos__Listesi,
-  todos__DetayDialog,
-  todos__BosKayit,
-} from "./../../store/statics/const_todos";
+  tutorials__Listesi,
+  tutorials__DetayDialog,
+  tutorials__BosKayit,
+} from "./../../store/statics/const_tutorials";
 
 import {
   modKayitEkleme,
@@ -88,31 +88,31 @@ import {
 
 import { mapGetters } from "vuex";
 export default {
-  name: "Cmp-todos.vue",
+  name: "Cmp-tutorials.vue",
   components: {
-    todosEkleDuzelt,
+    tutorialsEkleDuzelt,
   },
   data: () => ({
     aranacak: "",
     fields: [
-      { key: "task", label: "" },
+      { key: "title", label: "" },
       { key: "description", label: "" },
-      { key: "completed", label: "" },
+      { key: "published", label: "" },
       { key: "actions", label: "İşlemler" },
     ],
   }),
   computed: {
-    ...mapGetters("todos", [
-      todos__Listesi,
-      todos__DetayDialog,
-      todos__BosKayit,
+    ...mapGetters("tutorials", [
+      tutorials__Listesi,
+      tutorials__DetayDialog,
+      tutorials__BosKayit,
     ]),
-    todos__KayitDialog: {
+    tutorials__KayitDialog: {
       get: function () {
-        return this.$store.getters["todos/todos__KayitDialog"];
+        return this.$store.getters["tutorials/tutorials__KayitDialog"];
       },
       set: function (newValue) {
-        this.$store.commit("todos/todos__KayitDialog", newValue);
+        this.$store.commit("tutorials/tutorials__KayitDialog", newValue);
       },
     },
   },
@@ -135,7 +135,7 @@ export default {
         })
         .then((result) => {
           if (result.isConfirmed) {
-            this.$store.dispatch("todos/todos__Sil", kayit);
+            this.$store.dispatch("tutorials/tutorials__Sil", kayit);
           } /*else if (result.isDismissed) {
             this.$swal.fire("Silinmedi.", "", "success");
           }*/
@@ -145,21 +145,21 @@ export default {
       return Ensar.Tarih.tarihStandartDanTurkce(pTrh);
     },
     initialize() {
-      this.$store.dispatch("todos/todos__Listesi");
+      this.$store.dispatch("tutorials/tutorials__Listesi");
     },
     formuGosterGizle(pDialog, pMod) {
-      this.$store.commit("todos/todos__KayitDialog", pDialog);
-      this.$store.commit("todos/todos__KayitModu", pMod);
+      this.$store.commit("tutorials/tutorials__KayitDialog", pDialog);
+      this.$store.commit("tutorials/tutorials__KayitModu", pMod);
     },
     yeniKayitHazirla() {
       this.$store.commit(
-        "todos/todos__DuzeltilecekKayit",
-        this.todos__BosKayit
+        "tutorials/tutorials__DuzeltilecekKayit",
+        this.tutorials__BosKayit
       );
       this.formuGosterGizle(true, modKayitEkleme);
     },
     kaydiDuzenlemeyeHazirla(item) {
-      this.$store.commit("todos/todos__DuzeltilecekKayit", item);
+      this.$store.commit("tutorials/tutorials__DuzeltilecekKayit", item);
       this.formuGosterGizle(true, modKayitDuzeltme);
     },
   },

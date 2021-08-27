@@ -8,9 +8,9 @@ export default new Router({
   routes: [
     {
       path: "/",
-      alias: "/tutorials",
-      name: "tutorials",
-      component: () => import("./components/TutorialsList")
+      alias: "/",
+      name: "homePage",
+      component: () => import("./views/Vw-home.vue")
     },
     {
       path: "/todos",
@@ -19,15 +19,11 @@ export default new Router({
       component: () => import("./views/todos/Vw-todos.vue")
     },
     {
-      path: "/tutorials/:id",
-      name: "tutorial-details",
-      component: () => import("./components/Tutorial")
+      path: "/tutorials",
+      alias: "/tutorials",      
+      name: "tutorials",
+      component: () => import("./views/todos/Vw-tutorials.vue")
     },
-    {
-      path: "/add",
-      name: "add",
-      component: () => import("./components/AddTutorial")
-    }
   ]
 });
 

@@ -11,33 +11,31 @@
       <b-row>
         <b-col cols="12">
           <b-form-group
-            id="input-group-task"
-            label="Task** :"
-            label-for="input-task"
+            id="input-group-title"
+            label="** :"
+            label-for="input-title"
           >
             <b-form-input
-              id="input-task"
-              v-model="$v.kayit.task.$model"
+              id="input-title"
+              v-model="$v.kayit.title.$model"
               required
-              placeholder="Task"
+              placeholder="** "
             ></b-form-input>
           </b-form-group>
           <b-form-group
             id="input-group-description"
-            label="Description:"
+            label=":"
             label-for="input-description"
           >
             <b-form-input
               id="input-description"
               v-model="kayit.description"
-              placeholder="Description"
+              placeholder=""
             ></b-form-input>
           </b-form-group>
-        </b-col>
-        <b-col cols="12">
-          <b-form-group id="input-group-completed">
-            <b-form-checkbox v-model="$v.kayit.completed.$model">
-              Completed:**
+          <b-form-group id="input-group-published">
+            <b-form-checkbox v-model="$v.kayit.published.$model"
+              >**
             </b-form-checkbox>
           </b-form-group>
         </b-col>
@@ -60,32 +58,32 @@ import {
 } from "./../../store/statics/const_umumi";
 
 import {
-  todos__KayitModu,
-  todos__KayitDialog,
-  todos__BosKayit,
-  todos__Listesi,
-  todos__DuzeltilecekKayit,
-} from "./../../store/statics/const_todos";
+  tutorials__KayitModu,
+  tutorials__KayitDialog,
+  tutorials__BosKayit,
+  tutorials__Listesi,
+  tutorials__DuzeltilecekKayit,
+} from "./../../store/statics/const_tutorials";
 import { mapGetters } from "vuex";
 export default {
-  name: "Cmp-todos_EkleDuzelt.vue",
+  name: "Cmp-tutorials_EkleDuzelt.vue",
   data: () => ({
     kayit: {},
   }),
   computed: {
-    ...mapGetters("todos", [
-      todos__Listesi,
-      todos__KayitDialog,
-      todos__KayitModu,
-      todos__BosKayit,
-      todos__DuzeltilecekKayit,
+    ...mapGetters("tutorials", [
+      tutorials__Listesi,
+      tutorials__KayitDialog,
+      tutorials__KayitModu,
+      tutorials__BosKayit,
+      tutorials__DuzeltilecekKayit,
     ]),
     formTitle() {
-      if (this.todos__KayitModu == modKayitEkleme) {
+      if (this.tutorials__KayitModu == modKayitEkleme) {
         this.yeniKayitHazirla();
         return "Yeni  Kayıt";
       }
-      if (this.todos__KayitModu == modKayitDuzeltme) {
+      if (this.tutorials__KayitModu == modKayitDuzeltme) {
         this.kaydiDuzenlemeyeHazirla();
         return " Kayıt Düzeltme";
       }
@@ -94,7 +92,7 @@ export default {
   },
   methods: {
     formuKapat() {
-      this.$store.commit("todos/todos__KayitDialogKapat");
+      this.$store.commit("tutorials/tutorials__KayitDialogKapat");
     },
     iptal() {
       this.formuKapat();
@@ -107,32 +105,32 @@ export default {
       return Ensar.Tarih.strStandartTarihiTeyidEt(pStrTarih);
     },
     yeniKayitHazirla() {
-      this.kayit = Ensar.Nesne.klonla(this.todos__BosKayit);
+      this.kayit = Ensar.Nesne.klonla(this.tutorials__BosKayit);
     },
     kaydiDuzenlemeyeHazirla() {
-      this.kayit = Ensar.Nesne.klonla(this.todos__DuzeltilecekKayit);
+      this.kayit = Ensar.Nesne.klonla(this.tutorials__DuzeltilecekKayit);
     },
     kaydiSil(cevab) {
       if (cevab.silinsinMi == true) {
-        this.$store.dispatch("todos/todos__Sil", cevab.kayit);
+        this.$store.dispatch("tutorials/tutorials__Sil", cevab.kayit);
       }
     },
     kaydet(evt) {
       evt.preventDefault();
-      if (this.todos__KayitModu == modKayitEkleme) {
-        this.$store.dispatch("todos/todos__Kaydet", this.kayit);
+      if (this.tutorials__KayitModu == modKayitEkleme) {
+        this.$store.dispatch("tutorials/tutorials__Kaydet", this.kayit);
       }
-      if (this.todos__KayitModu == modKayitDuzeltme) {
-        this.$store.dispatch("todos/todos__Guncelle", this.kayit);
+      if (this.tutorials__KayitModu == modKayitDuzeltme) {
+        this.$store.dispatch("tutorials/tutorials__Guncelle", this.kayit);
       }
     },
   },
   validations: {
     kayit: {
-      task: {
+      title: {
         required,
       },
-      completed: {
+      published: {
         required,
       },
     },

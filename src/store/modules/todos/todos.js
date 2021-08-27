@@ -1,7 +1,8 @@
-import { EventBus, talepNevleri, neticeNevleri } from "@/app/event";
+import { EventBus, talepNevleri, neticeNevleri } from "../../../app/event";
 import { ToastSuccess } from "@/assets/js/vue-toastification";
-import Ensar from "./../../../ktb";
-import store from './../../index';
+import Ensar from "@/ktb/index";
+import store from "../../index";
+import { umumiHata } from "../../statics/const_umumi";
 import {
   todos__Listesi,
   todos__BosKayit,
@@ -102,19 +103,18 @@ const actions = {
         }
       })
       .catch(function (pHata) {
-        store.commit("umumi/umumiHata", pHata);
+        store.commit(umumiHata, pHata);
       });
   },
   [todos__Kaydet]: ({ commit, getters }, payload) => {
-    EventBus.HttpApiTalebiYapPrms(talepNevleri.Post, "todos/todos", payload)
+    EventBus.HttpApiTalebiYapPrms(talepNevleri.Post, "todos", payload)
       .then(function (pNetice) {
         if (pNetice.Netice == neticeNevleri.Tamam) {
-          let yeniKayit = pNetice.Kayitlar[0];
           commit(
             "todos__Listesi",
             Ensar.Diziler.diziyeElemanEkleSirala(
               getters.todos__Listesi,
-              yeniKayit,
+              pNetice.Kayitlar,
               "task",
               true
             )
@@ -123,24 +123,24 @@ const actions = {
           ToastSuccess("Kayıt yapıldı.");
           commit(todos__KayitDialogKapat);
         } else {
-          store.commit("umumi/umumiHata", "Kayıt yapılamadı!");
+          store.commit(umumiHata, "Kayıt yapılamadı!");
           commit(todos__KaydetTamamMi, pNetice.Mesaj);
         }
       })
       .catch(function (pHata) {
-        store.commit("umumi/umumiHata", pHata);
+        store.commit(umumiHata, pHata);
         commit(todos__KaydetTamamMi, pHata);
       });
   },
   [todos__Guncelle]: ({ commit, getters }, payload) => {
-    EventBus.HttpApiTalebiYapPrms(talepNevleri.Put, "todos/todos", payload)
+    EventBus.HttpApiTalebiYapPrms(talepNevleri.Put, "todos/" + payload.id, payload)
       .then(function (pNetice) {
         if (pNetice.Netice == neticeNevleri.Tamam) {
           commit(
             "todos__Listesi",
             Ensar.Diziler.dizininElemaniniGuncelleSirala(
               getters.todos__Listesi,
-              pNetice.Kayitlar[0],
+              pNetice.Kayitlar,
               "task", true
             )
           );
@@ -148,21 +148,19 @@ const actions = {
           ToastSuccess("Kayıt güncellendi.");
           commit(todos__KayitDialogKapat);
         } else {
-          store.commit("umumi/umumiHata", "Kayıt Güncellenemedi!");
+          store.commit(umumiHata, "Kayıt Güncellenemedi!");
           commit(todos__DuzeltmeTamamMi, pNetice.Mesaj);
         }
       })
       .catch(function (pHata) {
-        store.commit("umumi/umumiHata", pHata);
+        store.commit(umumiHata, pHata);
         commit(todos__DuzeltmeTamamMi, pHata);
       });
   },
 
   [todos__Sil]: ({ commit, getters }, payload) => {
     EventBus.HttpApiTalebiYapPrms(
-      talepNevleri.Delete,
-      "todos/todos",
-      payload
+      talepNevleri.Delete, "todos/" + payload.id, payload
     )
       .then(function (pNetice) {
         if (pNetice.Netice == neticeNevleri.Tamam) {
@@ -177,12 +175,12 @@ const actions = {
           commit(todos__SilTamamMi, true);
           ToastSuccess("Kayıt silindi.");
         } else {
-          store.commit("umumi/umumiHata", "Kayıt Silininemedi!");
+          store.commit(umumiHata, "Kayıt Silininemedi!");
           commit(todos__SilTamamMi, pNetice.Mesaj);
         }
       })
       .catch(function (pHata) {
-        store.commit("umumi/umumiHata", pHata);
+        store.commit(umumiHata, pHata);
         commit(todos__SilTamamMi, pHata);
       });
   },
