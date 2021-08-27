@@ -12,30 +12,30 @@
         <b-col cols="12">
           <b-form-group
             id="input-group-title"
-            label="** :"
+            label="Title** :"
             label-for="input-title"
           >
             <b-form-input
               id="input-title"
               v-model="$v.kayit.title.$model"
               required
-              placeholder="** "
+              placeholder="Title"
             ></b-form-input>
           </b-form-group>
           <b-form-group
             id="input-group-description"
-            label=":"
+            label="Description:"
             label-for="input-description"
           >
             <b-form-input
               id="input-description"
               v-model="kayit.description"
-              placeholder=""
+              placeholder="Description"
             ></b-form-input>
           </b-form-group>
           <b-form-group id="input-group-published">
-            <b-form-checkbox v-model="$v.kayit.published.$model"
-              >**
+            <b-form-checkbox v-model="$v.kayit.published.$model">
+              Published
             </b-form-checkbox>
           </b-form-group>
         </b-col>
